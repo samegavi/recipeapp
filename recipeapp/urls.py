@@ -17,6 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.urls import include
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+from .views import login_view, logout_view, success_view, about_view
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
+    # path('', include('recipes.urls', namespace='main')),
+    path('', include('recipes.urls')),
+    path('recipes/', include('recipes.urls', namespace='recipes-list')),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('success/', success_view, name='success'),
+    path('about/', about_view, name='about'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
